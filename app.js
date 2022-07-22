@@ -13,10 +13,10 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1/bitfilmsdb');
+  await mongoose.connect('mongodb://127.0.0.1/bitfilmsdb');
   
-    app.listen(PORT, () => {
-      console.log(`Server is running on port: ${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`);
     });
   }
   
