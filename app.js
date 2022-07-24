@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const { routes } = require('./routes/routes');
 const NotFoundError = require('./errors/NotFoundError');
 const auth = require('./middlewares/auth');
+const { userSignUp, userSignIn, userSignOut } = require('./controllers/userController');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const PORT = 3000;
@@ -21,6 +22,9 @@ app.use((req, res, next) => {
 
 app.use(requestLogger);
 app.use(express.json());
+app.post('/signup', userSignUp);
+app.post('/signin', userSignIn);
+app.post('/signout', userSignOut);
 app.use(auth);
 app.use(routes);
 app.use(errorLogger);

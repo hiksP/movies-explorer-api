@@ -5,6 +5,6 @@ const { movieRoutes } = require('./movieRoutes');
 const routes = express.Router();
 
 routes.use('/users', userRoutes);
-routes.use('/movies', movieRoutes);
+// routes.use('/movies', movieRoutes);
 
 exports.routes = routes;

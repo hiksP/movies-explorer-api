@@ -1,11 +1,11 @@
-const express = require('express');
+// const express = require('express');
 
-const movieRoutes = express.Router();
+// const movieRoutes = express.Router();
 
-movieRoutes.get('/', getMovies);
+// movieRoutes.get('/', getMovies);
 
-movieRoutes.post('/', addMovie);
+// movieRoutes.post('/', addMovie);
 
-movieRoutes.delete('/:id', deleteMovie);
+// movieRoutes.delete('/:id', deleteMovie);
 
-exports.movieRoutes = movieRoutes;
+// exports.movieRoutes = movieRoutes;
