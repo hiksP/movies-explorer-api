@@ -95,5 +95,9 @@ exports.userSignIn = async (req, res, next) => {
 };
 
 exports.userSignOut = async (req, res, next) => {
-  console.log(req.cookies);
+  if (req.cookies.jwt) {
+    res.status(202).clearCookie('jwt').send('Вы вышли');
+  } else {
+    next();
+  }
 };
