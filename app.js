@@ -22,8 +22,19 @@ app.use((req, res, next) => {
 
 app.use(requestLogger);
 app.use(express.json());
-app.post('/signup', userSignUp);
-app.post('/signin', userSignIn);
+app.post('/signup', express.json(), celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}), userSignUp);
+app.post('/signin', express.json(), celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
+  }),
+}), userSignIn);
 app.post('/signout', userSignOut);
 app.use(auth);
 app.use(routes);
