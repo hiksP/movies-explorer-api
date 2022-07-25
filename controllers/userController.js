@@ -4,7 +4,7 @@ require('dotenv').config();
 const { User } = require('../models/user');
 const { getJwtToken } = require('../utils/jwt');
 const NotFoundError = require('../errors/NotFoundError');
-const WrongReqError = require('../../react-mesto-api-full/backend/errors/wrong-req-err');
+const WrongReqError = require('../errors/WrongReqError');
 const WrongAuthError = require('../errors/WrongAuthError');
 const CreatedUserError = require('../errors/CreatedUserError');
 
@@ -19,7 +19,10 @@ exports.getMe = async (req, res, next) => {
     if (user == null) {
       throw new NotFoundError('Пользователь не найден');
     } else {
-      res.send(user);
+      res.send({
+        email: user.email,
+        name: user.name,
+      });
     }
   } catch (err) {
     next(err);
@@ -32,7 +35,12 @@ exports.updateUser = async (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .then((user) => res.send(user))
+    .then((user) => {
+      res.send({
+        email: user.email,
+        name: user.name,
+      });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new WrongReqError('Переданы некорректные данные'));

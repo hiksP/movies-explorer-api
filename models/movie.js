@@ -56,4 +56,4 @@ const movieScheme = new mongoose.Schema({
   },
 });
 
-exports.Move = mongoose.Model('Movie', movieScheme);
+exports.Movie = mongoose.model('Movie', movieScheme);
