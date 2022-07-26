@@ -48,7 +48,8 @@ exports.addMovie = async (req, res, next) => {
 };
 
 exports.deleteMovie = async (req, res, next) => {
-  Movie.findById(req.params.id)
+  console.log(req.params);
+  Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм не найден');

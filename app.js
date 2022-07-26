@@ -15,10 +15,6 @@ const PORT = 3000;
 const app = express();
 
 app.use(cookieParser());
-app.use((req, res, next) => {
-  console.log(req.method, req.path);
-  next();
-});
 
 app.use(requestLogger);
 app.use(express.json());
@@ -35,7 +31,11 @@ app.post('/signin', express.json(), celebrate({
     password: Joi.string().required(),
   }),
 }), userSignIn);
-app.post('/signout', userSignOut);
+app.post('/signout', auth, celebrate({
+  headers: Joi.object().keys({
+    cookie: Joi.string().required(),
+  }).unknown(true),
+}), userSignOut);
 app.use(auth);
 app.use(routes);
 app.use(errorLogger);

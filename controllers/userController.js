@@ -7,6 +7,7 @@ const NotFoundError = require('../errors/NotFoundError');
 const WrongReqError = require('../errors/WrongReqError');
 const WrongAuthError = require('../errors/WrongAuthError');
 const CreatedUserError = require('../errors/CreatedUserError');
+const NoRightsError = require('../errors/NoRightsError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const secret = NODE_ENV === 'production' ? JWT_SECRET : 'pass';
@@ -106,6 +107,6 @@ exports.userSignOut = async (req, res, next) => {
   if (req.cookies.jwt) {
     res.status(202).clearCookie('jwt').send('Вы вышли');
   } else {
-    next();
+    next(new NoRightsError('Для того чтобы выйти надо для начала зайти....'));
   }
 };
