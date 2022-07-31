@@ -48,17 +48,15 @@ exports.addMovie = async (req, res, next) => {
 };
 
 exports.deleteMovie = async (req, res, next) => {
-  console.log(req.params);
   Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм не найден');
       } else if (movie.owner.toString() === req.user.id) {
-        movie.remove();
-        res.send({ data: movie });
-      } else {
-        throw new NoRightsError('Недостаточно прав');
+        return movie.remove()
+          .then(() => res.status(200).send({ message: 'Фильм удален' }));
       }
+      throw new NoRightsError('Недостаточно прав');
     })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {

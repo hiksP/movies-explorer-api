@@ -4,7 +4,6 @@ const WrongAuthError = require('../errors/WrongAuthError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-// eslint-disable-next-line consistent-return
 module.exports = async (req, res, next) => {
   try {
     const authorization = req.cookies.jwt;

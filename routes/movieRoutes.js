@@ -14,13 +14,13 @@ const isUrlMethod = (value) => {
   throw new Error('URL validation err');
 };
 
-movieRoutes.get('/', auth, celebrate({
+movieRoutes.get('/movies', auth, celebrate({
   headers: Joi.object().keys({
     cookie: Joi.string().required(),
   }).unknown(true),
 }), getMovies);
 
-movieRoutes.post('/', auth, celebrate({
+movieRoutes.post('/movies', auth, celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
@@ -36,7 +36,7 @@ movieRoutes.post('/', auth, celebrate({
   }),
 }), addMovie);
 
-movieRoutes.delete('/:movieId', auth, celebrate({
+movieRoutes.delete('/movies/:movieId', auth, celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().hex().length(24).required(),
   }).unknown(true),

@@ -31,37 +31,30 @@ exports.getMe = async (req, res, next) => {
 };
 
 exports.updateUser = async (req, res, next) => {
-  const { name } = req.body;
-  User.findByIdAndUpdate(req.user.id, { name }, {
-    new: true,
-    runValidators: true,
-  })
-    .then((user) => {
-      res.send({
-        email: user.email,
-        name: user.name,
-      });
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new WrongReqError('Переданы некорректные данные'));
-      } else {
-        next(err);
-      }
+  const { name, email } = req.body;
+  try {
+    await User.findByIdAndUpdate(req.user.id, { name, email }, {
+      new: true,
+      runValidators: true,
     });
+    res.send({
+      email,
+      name,
+    });
+  } catch (err) {
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
+      next(new WrongReqError('Переданы некорректные данные'));
+    } else if (err.codeName === 'DuplicateKey') {
+      next(new CreatedUserError('Пользователь с такими данными уже есть'));
+    } else {
+      next(err);
+    }
+  }
 };
 
 exports.userSignUp = async (req, res, next) => {
   try {
-    const hashedPassword = await new Promise((resolve, reject) => {
-      bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(hash);
-        }
-      });
-    });
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const user = await User.create({
       email: req.body.email,
       password: hashedPassword,
@@ -95,7 +88,7 @@ exports.userSignIn = async (req, res, next) => {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
           })
-          .send(JSON.stringify({ token }));
+          .send({ token });
       })
       .catch((err) => {
         next(new WrongAuthError(err.message));
