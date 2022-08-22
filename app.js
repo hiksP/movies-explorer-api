@@ -22,8 +22,8 @@ app.use(requestLogger);
 app.use(cors);
 app.use(express.json());
 app.use(signRoutes);
-app.use(auth);
 app.use(routes);
+app.use(auth);
 app.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
