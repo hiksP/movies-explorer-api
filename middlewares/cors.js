@@ -1,7 +1,7 @@
 const allowedCors = [
   'http://localhost:3000',
-  'http://movies4all.nomoredomains.sbs/',
-  'https://movies4all.nomoredomains.sbs/',
+  'http://movies4all.nomoredomains.sbs',
+  'https://movies4all.nomoredomains.sbs',
 ];
 
 module.exports = (req, res, next) => {
@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
 
   if (method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', 'Authorization', requestHeaders);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
     return res.end();
   }
   next();
